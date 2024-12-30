@@ -31,7 +31,7 @@ export class LoginService {
         .catch((error) => {
           if (error.code === 'auth/user-not-found') {
             // Jika user tidak ditemukan, buat akun baru
-            this.createUser(email, password).subscribe(observer);
+            // this.createUser(email, password).subscribe(observer);
           } else {
             observer.error(error);
           }
@@ -43,17 +43,7 @@ export class LoginService {
     return this.afAuth.authState;
   }
 
-  createUser(email: string, password: string): Observable<any> {
-    return new Observable((observer) => {
-      this.afAuth
-        .createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          observer.next(userCredential);
-          observer.complete();
-        })
-        .catch((error) => {
-          observer.error(error);
-        });
-    });
+  createUser(email: string, password: string) {
+    return this.afAuth.createUserWithEmailAndPassword(email, password);
   }
 }

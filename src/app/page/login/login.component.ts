@@ -51,4 +51,14 @@ export class LoginComponent implements OnInit{
     );
   }
 
+  create(){
+    this.loginService.createUser(this.email, this.password)
+      .then((userCredential) => {
+        console.log('User created:', userCredential);
+      })
+      .catch((error) => {
+        console.error('Error creating user:', error);
+      });
+  }
+
 }
