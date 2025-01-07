@@ -2,19 +2,28 @@
   <div class="col-2"></div>
   <div class="col-8 flex flex-col bg-bluegray-100 border-round">
     <div class="flex flex-column" [style]="{ width: '100%', height: '96vh'}">
-      <div class="flex align-items-center justify-content-center m-2 border-round bg-bluegray-50" >
-        <p-scrollpanel #scrollPanel [style]="{ height: '83vh'}">
-          <div class="flex flex-column">
-            <div [style]="{ height: '70vh'}"></div>
-            <div class="flex align-items-center justify-content-center">1</div>
-            <div class="flex align-items-center justify-content-center">2</div>
-            <div class="flex align-items-center justify-content-center">3</div>
-            <div class="flex align-items-center justify-content-center">4</div>
+      <p-scrollpanel class="flex m-2 border-round bg-bluegray-50" #scrollPanel
+        [style]="{ width:'100%', height: '83vh'}">
+        <div [style]="{ width:'100%', height: '70vh'}"></div>
+        <div class="flex flex-column w-full p-2">
+          <div class="flex flex-row-reverse">
+            <div class="flex flex-column align-items-end m-1 p-3 shadow-2 border-round"
+              [style]="{ width: 'fit-content', maxWidth: '60%' }">
+              <div class="font-bold text-right">You</div>
+              <div>Your message goes here.</div>
+              <div class="text-xs font-italic text-right">10:30 AM</div>
+            </div>
           </div>
-        </p-scrollpanel>
-      </div>
+          <div class="flex flex-column align-items-start m-1 p-3 shadow-2 border-round"
+            [style]="{ width: 'fit-content', maxWidth: '60%' }">
+            <div class="font-bold">Sender</div>
+            <div>Message received from someone else.</div>
+            <div class="text-xs font-italic">10:31 AM</div>
+          </div>
+        </div>
+      </p-scrollpanel>
       <div class="flex align-items-center justify-content-center h-4rem font-bold border-round m-2">
-        <div class="flex justify-content-center align-items-center gap-2 w-full" >
+        <div class="flex justify-content-center align-items-center gap-2 w-full">
           <textarea style="resize: none;" rows="2" class="w-full" pTextarea [(ngModel)]="message"></textarea>
           <button pButton type="button" label="Send" icon="pi pi-send" severity="info"></button>
         </div>
@@ -22,6 +31,7 @@
     </div>
   </div>
   <div class="col-2">
-    <button class="w-full" pButton type="button" label="Logout" icon="pi pi-sign-out" (click)="logout()" severity="info"></button>
+    <button class="w-full" pButton type="button" label="Logout" icon="pi pi-sign-out" (click)="logout()"
+      severity="info"></button>
   </div>
 </div>
