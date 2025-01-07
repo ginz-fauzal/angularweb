@@ -1,9 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImportsModule } from '../../import/import';
 
 import { LoginService } from './login.service';
-// import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +11,10 @@ import { LoginService } from './login.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit{
-  // private auth = inject(Auth);
 
   email: string = '';
   password: string = '';
-  errorMessage: string = '';
+  formType=1;
 
   constructor(
     private router: Router,
@@ -24,10 +22,15 @@ export class LoginComponent implements OnInit{
   ) {
     
   }
+
+  changeForm(index:number){
+    this.formType=index;
+    console.log(this.formType)
+  }
+
   ngOnInit(): void {
     this.loginService.getUser().subscribe((user) => {
       if (user) {
-        // Redirect jika user sudah login
         console.log('User is logged in:', user.email);
         this.router.navigate(['/home']);
       }
@@ -37,15 +40,10 @@ export class LoginComponent implements OnInit{
   login() {
     this.loginService.login(this.email, this.password).subscribe(
       (userCredential) => {
-        // Login berhasil
         console.log('User logged in:', userCredential);
         this.router.navigate(['/home']);
-
-        // Redirect atau proses lebih lanjut sesuai kebutuhan
       },
       (error) => {
-        // Tampilkan pesan error jika ada
-        this.errorMessage = error.message;
         console.log('Error:', error);
       }
     );
@@ -58,6 +56,27 @@ export class LoginComponent implements OnInit{
       })
       .catch((error) => {
         console.error('Error creating user:', error);
+      });
+  }
+
+  onRegister() {
+    this.loginService.register(this.email, this.password)
+      .then((result) => {
+        if (result.success) {
+          console.log(result.message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error creating user:', error);
+      });
+  }
+
+  forgotPassword() {
+    this.loginService.forgotPassword(this.email)
+      .then(() => {
+      })
+      .catch((err) => {
+        console.error('Error creating user:', err);
       });
   }
 

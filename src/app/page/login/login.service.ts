@@ -10,16 +10,6 @@ export class LoginService {
 
   constructor(private afAuth: AngularFireAuth, private router: Router) {}
 
-  // async login(email: string, password: string) {
-  //   try {
-  //     const result = await this.afAuth.signInWithEmailAndPassword(email, password);
-  //     console.log('Login Berhasil:', result);
-  //     this.router.navigate(['/home']);
-  //   } catch (error) {
-  //     console.error('Error saat login:', error);
-  //   }
-  // }
-
   login(email: string, password: string): Observable<any> {
     return new Observable((observer) => {
       this.afAuth
@@ -29,12 +19,7 @@ export class LoginService {
           observer.complete();
         })
         .catch((error) => {
-          if (error.code === 'auth/user-not-found') {
-            // Jika user tidak ditemukan, buat akun baru
-            // this.createUser(email, password).subscribe(observer);
-          } else {
             observer.error(error);
-          }
         });
     });
   }
@@ -45,5 +30,30 @@ export class LoginService {
 
   createUser(email: string, password: string) {
     return this.afAuth.createUserWithEmailAndPassword(email, password);
+  }
+
+  register(email: string, password: string):Promise<any> {
+    return this.afAuth.createUserWithEmailAndPassword(email, password).then((userCredential) => {
+      const user = userCredential.user;
+      if (user) {
+        return user.sendEmailVerification().then(() => {
+          return { success: true, message: 'User created and verification email sent.' };
+        });
+      } else {
+        return { success: false, message: 'User creation failed.' };
+      }
+    }).catch((error) => {
+      throw error;
+    });
+  }
+
+  forgotPassword(email: string) {
+    return this.afAuth.sendPasswordResetEmail(email);
+  }
+
+  isEmailVerified() {
+    return this.afAuth.currentUser.then(user => {
+      return user?.emailVerified || false;
+    });
   }
 }
