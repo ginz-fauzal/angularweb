@@ -6,31 +6,39 @@
         [style]="{ width:'100%', height: '83vh'}">
         <div [style]="{ width:'100%', height: '70vh'}"></div>
         <div class="flex flex-column w-full p-2">
+          @for (chat of chats; track chat.id) {
+          @if(chat.name!=name){
+          <div class="flex flex-column align-items-start m-1 p-3 shadow-2 border-round"
+            [style]="{ width: 'fit-content', maxWidth: '60%' }">
+            <div class="font-bold">{{chat.name}}</div>
+            <div>{{chat.message}}</div>
+            <div class="text-xs font-italic">{{formatTimestamp(chat.timestamp)}}</div>
+          </div>
+          }
+          @else{
           <div class="flex flex-row-reverse">
             <div class="flex flex-column align-items-end m-1 p-3 shadow-2 border-round"
               [style]="{ width: 'fit-content', maxWidth: '60%' }">
-              <div class="font-bold text-right">You</div>
-              <div>Your message goes here.</div>
-              <div class="text-xs font-italic text-right">10:30 AM</div>
+              <div class="font-bold text-right">{{chat.name}}</div>
+              <div>{{chat.message}}</div>
+              <div class="text-xs font-italic text-right">{{formatTimestamp(chat.timestamp)}}</div>
             </div>
           </div>
-          <div class="flex flex-column align-items-start m-1 p-3 shadow-2 border-round"
-            [style]="{ width: 'fit-content', maxWidth: '60%' }">
-            <div class="font-bold">Sender</div>
-            <div>Message received from someone else.</div>
-            <div class="text-xs font-italic">10:31 AM</div>
-          </div>
+          }
+          }
         </div>
       </p-scrollpanel>
       <div class="flex align-items-center justify-content-center h-4rem font-bold border-round m-2">
         <div class="flex justify-content-center align-items-center gap-2 w-full">
           <textarea style="resize: none;" rows="2" class="w-full" pTextarea [(ngModel)]="message"></textarea>
-          <button pButton type="button" label="Send" icon="pi pi-send" severity="info"></button>
+          <button pButton type="button" label="Send" icon="pi pi-send" (click)="sendMessage()" severity="info"></button>
         </div>
       </div>
     </div>
   </div>
   <div class="col-2">
+    <input type="text" class="w-full my-2" pInputText [(ngModel)]="name" />
+
     <button class="w-full" pButton type="button" label="Logout" icon="pi pi-sign-out" (click)="logout()"
       severity="info"></button>
   </div>
